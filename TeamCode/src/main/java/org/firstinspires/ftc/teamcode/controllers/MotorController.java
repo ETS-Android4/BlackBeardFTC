@@ -1,15 +1,28 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class MotorController {
+
+    //Motor without encoder: right_back
+
+    /*
+        FIXME:
+        some motors have negative ticks.
+     */
 
     DcMotor motorFrontLeft;
     DcMotor motorBackLeft;
     DcMotor motorFrontRight;
     DcMotor motorBackRight;
 
-    public void sleep(long Time) {
+    public static int tick = 1;
+
+    public int cmToTick(double cm){
+        return (int)(tick * cm);
+    }
+
+    public static void sleep(long Time) {
         try {Thread.sleep(Time);} catch (InterruptedException e) {e.printStackTrace();}
     }
 
@@ -22,13 +35,42 @@ public class MotorController {
         sleep(100);
     }
 
+    public void rotationLeft(double power, int ticks){
+        motorBackLeft.setTargetPosition(ticks);
+        motorFrontLeft.setTargetPosition(-ticks);
+        motorFrontRight.setTargetPosition(ticks);
+
+        motorBackRight.setPower(power);
+        motorBackLeft.setPower(-power);
+        motorFrontLeft.setPower(-power);
+        motorFrontRight.setPower(power);
+        runToPosition();
+        waitForMotors();
+        MotorsStop();
+    }
+
+    public void rotationRight(double power, int ticks){
+        motorBackLeft.setTargetPosition(ticks);
+        motorFrontLeft.setTargetPosition(-ticks);
+        motorFrontRight.setTargetPosition(ticks);
+
+        motorBackRight.setPower(-power);
+        motorBackLeft.setPower(power);
+        motorFrontLeft.setPower(power);
+        motorFrontRight.setPower(-power);
+        runToPosition();
+        waitForMotors();
+        MotorsStop();
+    }
+
+
     /*
         This method tells the encoder to start counting ticks.
         Note:
         You have to use `DcMotor#setTargetPosition(int)` with the ticks parameter for the method before using this method, Otherwise it will throw a `TargetPositionNotSetException`.
      */
     public void runToPosition(){
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -54,7 +96,7 @@ public class MotorController {
     }
 
     public void left(double power, int encoderTicks){
-        motorBackRight.setTargetPosition(-encoderTicks);
+        //motorBackRight.setTargetPosition(-encoderTicks);
         motorBackLeft.setTargetPosition(encoderTicks);
         motorFrontLeft.setTargetPosition(-encoderTicks);
         motorFrontRight.setTargetPosition(encoderTicks);
@@ -69,7 +111,7 @@ public class MotorController {
     }
 
     public void right(double power, int encoderTicks){
-        motorBackRight.setTargetPosition(encoderTicks);
+        //motorBackRight.setTargetPosition(encoderTicks);
         motorBackLeft.setTargetPosition(-encoderTicks);
         motorFrontLeft.setTargetPosition(encoderTicks);
         motorFrontRight.setTargetPosition(-encoderTicks);
@@ -84,15 +126,29 @@ public class MotorController {
     }
 
     public void forward(double power, int encoderTicks){
-        motorBackRight.setTargetPosition(encoderTicks);
+        //motorBackRight.setTargetPosition(encoderTicks);
         motorBackLeft.setTargetPosition(encoderTicks);
         motorFrontLeft.setTargetPosition(encoderTicks);
         motorFrontRight.setTargetPosition(encoderTicks);
-
         motorBackRight.setPower(power);
         motorBackLeft.setPower(power);
         motorFrontLeft.setPower(power);
         motorFrontRight.setPower(power);
+        runToPosition();
+        waitForMotors();
+        MotorsStop();
+    }
+
+    public void backward(double power, int encoderTicks){
+        //motorBackRight.setTargetPosition(encoderTicks);
+        motorBackLeft.setTargetPosition(encoderTicks);
+        motorFrontLeft.setTargetPosition(encoderTicks);
+        motorFrontRight.setTargetPosition(encoderTicks);
+
+        motorBackRight.setPower(-power);
+        motorBackLeft.setPower(-power);
+        motorFrontLeft.setPower(-power);
+        motorFrontRight.setPower(-power);
         runToPosition();
         waitForMotors();
         MotorsStop();

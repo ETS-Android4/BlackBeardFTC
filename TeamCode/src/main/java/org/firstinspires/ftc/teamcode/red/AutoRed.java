@@ -1,13 +1,14 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.controllers.MotorController;
 
 
 @Autonomous
-public class Auto extends LinearOpMode {
+public class AutoRed extends LinearOpMode {
 
     // runtime variable
     private ElapsedTime runtime = new ElapsedTime();
@@ -38,11 +39,11 @@ public class Auto extends LinearOpMode {
 
         debug("Status", "Started!");
 
-        controller.right(DRIVE_POWER, 5000); //drive right to get to the target
+        controller.right(DRIVE_POWER, controller.cmToTick(180)); //drive right to get to the target
         controller.runMotorForTime(carousel, CAROUSEL_POWER, 5000); //spin the carousel to drop the duck
-        controller.forward(DRIVE_POWER, 1000); //drive forward
-        //controller.turnLeft(DRIVE_POWER, 2000); //TURN left
-        controller.forward(DRIVE_POWER, 7000); //drive forward
+        controller.forward(DRIVE_POWER, controller.cmToTick(60)); //drive forward
+        controller.rotationLeft(DRIVE_POWER, controller.cmToTick(60)); //TURN left
+        controller.forward(DRIVE_POWER, controller.cmToTick(360)); //drive forward
     }
 
     private void debug(String caption, String body){
